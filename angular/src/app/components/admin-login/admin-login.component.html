@@ -1,0 +1,44 @@
+<div class="body">
+  <div class="title"><span class="imgcontainer">
+      <img src="../../../assets/football-img.png" alt="Avatar" class="avatar">
+    </span>Football Tournament</div>
+  <form #loginForm novalidate>
+
+    <h1 [align]="center">Admin Login</h1>
+
+    <div class="container">
+
+      <label for="name"><b>Username</b></label>
+      <input class="alname" id='name' name="name" #name="ngModel" type="text" placeholder="Enter Team Name" class="form-control"
+        [(ngModel)]="loginAdmin.name" required>
+      <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger"  id="Alert-No-Name">
+
+        <div *ngIf="name.errors.required">
+          {{nameReqErr}}
+        </div>
+
+      </div>
+
+      <label for="psw"><b>Password</b></label>
+      <input id='password' name='password' #password='ngModel' type="password" placeholder="Enter Password"
+        class="form-control" [(ngModel)]='loginAdmin.password' required>
+      <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger" id="Alert-No-Pwd">
+
+        <div *ngIf="password.errors.required" id="alertRequiredPassword">
+          {{pwdReqErr}}
+        </div>
+
+      </div>
+
+      <button id="login" type="submit" [disabled]="name.invalid || password.invalid"
+        (click)='logging(loginAdmin)'>Login</button>
+
+    </div>
+
+    <div class="container">
+      <button id="clr" type="reset" class="cancelbtn">Clear</button>
+    </div>
+  </form>
+
+</div>
+<div [align]="center"> <a id="userLogin" class="myLink" (click)="userLogin()">Login As User</a></div>

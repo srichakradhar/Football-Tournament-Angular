@@ -1,0 +1,180 @@
+<app-navigation></app-navigation>
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a id="home" (click)="toHome()">Home</a></li>
+    <li class="breadcrumb-item active">Mapping Teams</li>
+  </ol>
+</nav>
+<app-loader *ngIf="showLoading"></app-loader>
+
+<div class="container" *ngIf="numberOfTeams>=4; else elseBlock">
+  
+  <div class="row">
+    <div class="col">
+      <div class="card bg-primary">
+        <div class="card-body text-center">
+            <h4 class="card-title">Select a team for semi-final 1</h4>
+            <hr>
+            <p id="team1" *ngFor="let team of teamArray" (click)="mappingToLeaderboard(team.name,'Team 1')" class="hvr-grow">
+              <span *ngIf="team.name!=team2SemiFinal1 && team.name!=team3SemiFinal2 && team.name!=team4SemiFinal2">
+                {{team.name}}
+              </span>
+            </p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card bg-primary">
+        <div class="card-body text-center">
+            <h4 class="card-title">Select a team for semi-final 1</h4>
+            <hr>
+            <p id="team2" *ngFor="let team of teamArray" (click)="mappingToLeaderboard(team.name,'Team 2')" class="hvr-grow">
+              <span *ngIf="team.name!=team1SemiFinal1 && team.name!=team3SemiFinal2 && team.name!=team4SemiFinal2">
+                {{team.name}}
+              </span>
+            </p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card bg-primary">
+        <div class="card-body text-center">
+            <h4 class="card-title">Select a team for semi-final 2</h4>
+            <hr>
+            <p id="team3" *ngFor="let team of teamArray" (click)="mappingToLeaderboard(team.name,'Team 3')" class="hvr-grow">
+              <span *ngIf="team.name!=team1SemiFinal1 && team.name!=team2SemiFinal1 && team.name!=team4SemiFinal2">
+                {{team.name}}
+              </span>
+            </p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card bg-primary">
+        <div class="card-body text-center">
+            <h4 class="card-title">Select a team for semi-final 2</h4>
+            <hr>
+            <p id="team4" *ngFor="let team of teamArray" (click)="mappingToLeaderboard(team.name,'Team 4')" class="hvr-grow">
+              <span *ngIf="team.name!=team1SemiFinal1 && team.name!=team2SemiFinal1 && team.name!=team3SemiFinal2">
+                {{team.name}}
+              </span>
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row margin">
+    <div class="col">
+      <div class="card bg-primary">
+        <div class="card-body text-center">
+          <h4 class="card-title">Semi-Final 1</h4>
+          <hr>
+          <table [align]="center">
+          <tr>
+          <td id="team1SemiFinal1" class="card-text hvr-grow" (click)="mappingToLeaderboard(team1SemiFinal1,'Semi-Final 1')">
+            {{team1SemiFinal1}}
+          </td>
+          <td *ngIf="team1SemiFinal1!='' && isAdmin()" id="closeTeam1SemiFinal1" class="btn" (click)="mappingToLeaderboard('clear','Team 1')">
+            <i class="fa fa-window-close" aria-hidden="true"></i>
+          </td>
+          </tr>
+          
+          <tr>
+          <td id="team2SemiFinal1" class="card-text hvr-grow" (click)="mappingToLeaderboard(team2SemiFinal1,'Semi-Final 1')">
+            {{team2SemiFinal1}}
+          </td>
+          <td *ngIf="team2SemiFinal1!='' && isAdmin()" id="closeTeam2SemiFinal1" class="btn" (click)="mappingToLeaderboard('clear','Team 2')">
+            <i class="fa fa-window-close" aria-hidden="true"></i>
+          </td>
+          </tr>
+          
+        </table>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card bg-primary">
+        <div class="card-body text-center">
+          <h4 class="card-title">Semi-Final 2</h4>
+          <hr>
+          <table [align]="center">
+            <tr>
+          <td id="team3SemiFinal2" class="card-text hvr-grow" (click)="mappingToLeaderboard(team3SemiFinal2,'Semi-Final 2')">
+            {{team3SemiFinal2}}
+          </td>
+          <td *ngIf="team3SemiFinal2!='' && isAdmin()" id="closeTeam3SemiFinal2" class="btn" (click)="mappingToLeaderboard('clear','Team 3')">
+            <i class="fa fa-window-close" aria-hidden="true"></i>
+          </td>          
+        </tr>
+        <tr>
+          <td id="team4SemiFinal2" class="card-text hvr-grow" (click)="mappingToLeaderboard(team4SemiFinal2,'Semi-Final 2')">
+            {{team4SemiFinal2}}
+          </td>
+          <td *ngIf="team4SemiFinal2!='' && isAdmin()" id="closeTeam4SemiFinal2" class="btn" (click)="mappingToLeaderboard('clear','Team 4')">
+            <i class="fa fa-window-close" aria-hidden="true"></i>
+          </td>          
+        </tr>
+        </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row margin">
+    <div class="col">
+
+    </div>
+    <div class="col">
+      <div class="card bg-warning">
+        <div class="card-body text-center">
+          <h4 class="card-title">Final</h4>
+          <hr>
+          <table [align]="center">
+
+            <tr>
+              <td id="team1Final" (click)="mappingToLeaderboard(team1Final,'Final')" class="hvr-grow">{{team1Final}}</td>
+              <td *ngIf="team1Final!='' && isAdmin()"><a id="closeTeam1Final" class="btn"
+                (click)="mappingToLeaderboard('clear','Semi-Final 1')"><i class="fa fa-window-close" aria-hidden="true"></i></a></td>
+            </tr>
+
+            <tr>
+              <td id="team2Final" (click)="mappingToLeaderboard(team2Final,'Final')" class="hvr-grow">{{team2Final}}</td>
+              <td *ngIf="team2Final!='' && isAdmin()"><a id="closeTeam2Final" class="btn"
+                (click)="mappingToLeaderboard('clear','Semi-Final 2')"><i class="fa fa-window-close" aria-hidden="true"></i></a></td>
+            </tr>
+          </table>
+
+        </div>
+      </div>
+    </div>
+    <div class="col">
+
+    </div>
+  </div>
+  <div class="row margin">
+    <div class="col">
+      <div class="card bg-success">
+        <div class="card-body text-center">
+          <h4 class="card-title">Winner</h4>
+          <hr>
+          <table [align]="center">
+
+            <tr>
+              <td id="teamWinner" class="hvr-grow">{{teamWinner}}</td>
+              <td *ngIf="teamWinner!='' && isAdmin()"><a id="closeTeamWinner" class="btn"
+                (click)="mappingToLeaderboard('clear','Final')"><i class="fa fa-window-close" aria-hidden="true"></i></a></td>
+            </tr>
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #elseBlock>
+  <p *ngIf="!showLoading" class="text-danger">
+    {{inSuffTeamsErr}}
+  </p>
+</ng-template>

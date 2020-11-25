@@ -1,0 +1,142 @@
+<app-navigation></app-navigation>
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a>Home</a></li>
+    <li class="breadcrumb-item active">Participating Teams</li>
+    <li class="ml-auto"><a id="logout" class="myLink" style="background-color: #c7ca17;
+        color: black;" (click)="logout()">Log Out</a></li>
+  </ol>
+</nav>
+<app-loader *ngIf="showLoading"></app-loader>
+
+<div *ngIf="!isAdmin()" class="row">
+  <div class="col-lg-1"></div>
+  <div class="col-lg-2"><a id='routeMyTeam11' class="myLink" (click)="myTeam11()">Go to team 11</a></div>
+  <div class="col-lg-6">
+    <h1 id="loggedName" class="text-center">Hi! {{shown}}</h1>
+  </div>
+  <div class="col-lg-3"><a id='routeMyplayer' class="myLink" (click)="myPlayerDetails()">Go to add/view players</a>
+  </div>
+</div>
+<br>
+
+<div class="col-11 mx-auto mt-1 pt-2 pb-2 mx-2 rounded content-title">
+  Team Details
+</div>
+<div class="col-12">
+  <table class="table text-center">
+    <tr>
+      <th>Team Name</th>
+      <th>Country</th>
+      <th>Coach Name</th>
+      <th *ngIf="isAdmin()">Edit</th>
+      <th>Delete Team</th>
+      <th *ngIf="isAdmin()">Team 11</th>
+      <th *ngIf="isAdmin()">Player Details</th>
+    </tr>
+    <tr *ngFor="let team of teamArray ; let i = index" class="hoverto"  id='team'>
+      <td><b>{{team.name}}</b></td>
+      <td>{{team.country}}</td>
+      <td>{{team.coach}}
+        <button *ngIf="isBelongsTo(team.name)" id='editBtn' class="btn" data-toggle="modal" data-target="#myModal">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        </button>
+        <!----------------------------------Modal-For-Coach-Only-------------------------------------------------------->
+        <div class="container">
+          <!-- Modal -->
+          <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Edit Coach Name</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <table>
+                    <tr>
+                      <td>Coach Name:</td>
+                      <td><input type="text" [(ngModel)]="updating.coach"></td>
+                      <td></td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="modal-footer">
+                  <button id="updateBtn" type="button" class="btn btn-default update" data-dismiss="modal"
+                    (click)="updateTeam(updating,team.id)">Update</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!----------------------------------Modal-For-Coach-Only-Ends------------------------------------------------------->
+      </td>
+
+      <td *ngIf="isAdmin()">
+        <a id='adminEditBtn' (click)="assignTeam(team)" class="btn" data-toggle="modal" data-target="#adminEdit">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        </a>
+        <!------------------------------------Modal-For-All-Edits------------------------------------------------------->
+        <div class="container">
+          <!-- Modal -->
+          <div class="modal fade" id="adminEdit" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Edit Team Details</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <table>
+                    <tr>
+                      <td>Team Name:</td>
+                      <td><input type="text" [(ngModel)]="adminUpdating.name"></td>
+                    </tr>
+                    <tr>
+                      <td>Country Name:</td>
+                      <td><input type="text" [(ngModel)]="adminUpdating.country"></td>
+                    </tr>
+                    <tr>
+                      <td>Coach Name:</td>
+                      <td><input type="text" [(ngModel)]="adminUpdating.coach"></td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="modal-footer">
+                  <button id="adminUpdateBtn" type="button" class="btn btn-default update" data-dismiss="modal"
+                    (click)="updateTeam(adminUpdating,teamId)">Update</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!----------------------------------Modal-For-All-Edits-Ends------------------------------------------------------>
+      </td>
+
+      <td>
+        <a *ngIf="isBelongsTo(team.name) || isAdmin()" id='delBtn' class="btn text-danger"
+          (click)="deleteTeam(team.id)">
+          <i class="fa fa-trash-o" aria-hidden="true"></i>
+        </a>
+        <a *ngIf="!isBelongsTo(team.name) && !isAdmin()" id='disabledDelBtn' class="btn disabled">
+          <i class="fa fa-trash-o" aria-hidden="true"></i>
+        </a>
+      </td>
+      <td *ngIf="isAdmin()">
+        <a id='adminTeam11' class="myLink" (click)="team11(team)">Go to team 11</a>
+      </td>
+      <td *ngIf="isAdmin()">
+        <a id='adminPlayer' class="myLink" (click)="PlayerDetails(team)">Go to add/view players</a>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<br><br><br><br><br><br>
+
+<div class="footer">
+  <a id="lBoard" class="myLink" style="background-color: #c7ca17;color: black;" (click)="toLeaderBoard()">
+    Tournament LeaderBoard
+  </a>
+</div>

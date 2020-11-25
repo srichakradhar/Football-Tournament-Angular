@@ -1,0 +1,194 @@
+<app-navigation></app-navigation>
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a id="home" (click)="toHome()">Home</a></li>
+    <li class="breadcrumb-item active">Player Details</li>
+  </ol>
+</nav>
+<app-loader *ngIf="showLoading"></app-loader>
+
+<div class="row">
+
+  <div class="col-lg-5">
+    <form #playerForm="ngForm" novalidate>
+      <table>
+        <tr>
+          <td colspan="2">
+            <label for="status">Add Player</label>
+            <input id='name' name="name" #name="ngModel" placeholder="Enter the player name" class="form-control"
+              [(ngModel)]="playerDetail.name" required minlength="3" pattern="[A-Za-z ]+" maxlength="15">
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger" id="Alert-Invalid-Name">
+
+              <div *ngIf="name.errors.required">
+                {{nameReqErr}}
+              </div>
+              <div *ngIf="name.errors.pattern">
+                {{namePatternErr}}
+              </div>
+              <div *ngIf="name.errors.minlength">
+                {{nameMinErr}}
+              </div>
+
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <select id='type' name="type" #type="ngModel" class="form-control" [(ngModel)]="playerDetail.type" required>
+              <option value="" disabled selected>Select the type</option>
+              <option [value]="type" *ngFor="let type of typesOfPlayer">{{type}}</option>
+            </select>
+            <div *ngIf="type.invalid && (type.dirty || type.touched)" class="alert alert-danger" id="Alert-Invalid-Type">
+
+              <div *ngIf="type.errors.required">
+                {{typeReqErr}}
+              </div>
+
+            </div>
+          </td>
+          <td>
+            <input id='age' name="age" #age="ngModel" type="number" placeholder="Enter the age" class="form-control"
+              [(ngModel)]="playerDetail.age" min="16" max="35" required>
+            <div *ngIf="age.invalid && (age.dirty || age.touched)" class="alert alert-danger" id="Alert-Invalid-Age">
+
+              <div *ngIf="age.errors.required">
+                {{ageReqErr}}
+              </div>
+
+            </div>
+            <div class="alert alert-danger"
+              *ngIf="(playerDetail.age<16 || playerDetail.age>35) && playerDetail.age!=null" id="Alert-MinMax-Age">
+                {{ageRangeErr}}
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <input id='nmatches' name="nmatches" #nmatches="ngModel" type="number"
+              placeholder="Enter the no. of matches" class="form-control" [(ngModel)]="playerDetail.noOfMatches"
+              required>
+            <div *ngIf="nmatches.invalid && (nmatches.dirty || nmatches.touched)" class="alert alert-danger" id="Alert-Invalid-Nmatches">
+
+              <div *ngIf="nmatches.errors.required">
+                {{nmReqErr}}
+              </div>
+
+            </div>
+
+            <div class="alert alert-danger"
+              *ngIf="(playerDetail.noOfMatches<0 || playerDetail.noOfMatches>2000) && playerDetail.noOfMatches!=null" id="Alert-MinMax-Nmatches">
+              {{nmRangeErr}}
+            </div>
+
+          </td>
+          <td>
+            <input id='goals' name="goals" #goals="ngModel" type="number" placeholder="Enter the goals scored"
+              class="form-control" [(ngModel)]="playerDetail.goalsScored" required>
+            <div *ngIf="goals.invalid && (goals.dirty || goals.touched)" class="alert alert-danger" id="Alert-Invalid-Goals">
+
+              <div *ngIf="goals.errors.required">
+                {{goalReqErr}}
+              </div>
+
+            </div>
+
+            <div class="alert alert-danger"
+              *ngIf="(playerDetail.goalsScored<0 || playerDetail.goalsScored>1000) && playerDetail.goalsScored!=null" id="Alert-MinMax-Goals">
+              {{goalRangeErr}}
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <button id='createOrUpdate' [disabled]="playerForm.invalid || playerDetail.age<16 || playerDetail.age>35 || playerDetail.noOfMatches<0 || playerDetail.noOfMatches>2000 || playerDetail.goalsScored<0 || playerDetail.goalsScored>1000"
+              class="btn btn-success btn-block btn-lg" (click)="createOrUpdatePlayer(playerForm,playerDetail)"><i
+                class="fa fa-save"></i> Save</button>
+          </td>
+          <td>
+            <button id='clrBtn' type="reset" class="btn btn-primary btn-block btn-lg" (click)="clear()"><i
+                class="fa fa-retweet"></i> Clear</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+
+
+  <div class="col-lg-6">
+    <div id='teamName' class="col-11 mx-auto mt-1 pt-2 pb-2 mx-2 rounded content-title">{{showTeamName}} - Player Details</div>
+
+    <div class="col-12">
+      
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef> Type </th>
+          <td mat-cell *matCellDef="let element"> {{element.type}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="age">
+          <th mat-header-cell *matHeaderCellDef> Age </th>
+          <td mat-cell *matCellDef="let element"> {{element.age}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="noOfMatches">
+          <th mat-header-cell *matHeaderCellDef> No. of Matches </th>
+          <td mat-cell *matCellDef="let element"> {{element.noOfMatches}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="goalsScored">
+          <th mat-header-cell *matHeaderCellDef> Goals Scored </th>
+          <td mat-cell *matCellDef="let element"> {{element.goalsScored}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+          <th mat-header-cell *matHeaderCellDef> Edit </th>
+          <td mat-cell *matCellDef="let element">
+
+            <a id='editP' class="btn" (click)="editPlayers(element)">
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            </a>
+
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="del">
+          <th mat-header-cell *matHeaderCellDef> Delete </th>
+          <td mat-cell *matCellDef="let element">
+            <a id='deleteP' class="btn text-danger" (click)="deletePlayer(element.id)">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </a>
+
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+
+      <mat-paginator [pageSizeOptions]="[5, 10]"></mat-paginator>
+
+    </div>
+    
+    <div style="margin-left: 15px;">
+      <button id='deleteAllPlayers' class="btn btn-success" (click)="deleteAllPlayers()">
+        Delete All Players
+      </button>
+    </div>
+    
+    <div *ngIf="playerArray?.length==0">
+      <div class="alert alert-danger alertMsg" role="alert">There are no players in the team</div>
+    </div>
+  
+  </div>
+  
+  <div class="col-lg-1"></div>
+</div>

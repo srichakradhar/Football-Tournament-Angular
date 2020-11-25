@@ -1,0 +1,124 @@
+<app-navigation></app-navigation>
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/">Back to Login Page</a></li>
+    <li class="breadcrumb-item active">Tournament Registration</li>
+  </ol>
+</nav>
+
+<div class="row">
+
+  <div class="col-lg-1"></div>
+
+  <div class="col-lg-6">
+    <form #userForm="ngForm" novalidate>
+      <table>
+        <tr>
+          <td>
+            <label for="name">Team Name</label>
+            <input id='team' name="team" #team="ngModel" placeholder="Enter the team name" class="form-control"
+              [(ngModel)]="currentTeam.name" required minlength="3" maxlength="15">
+
+            <div *ngIf="team.invalid && (team.dirty || team.touched)" class="alert alert-danger"  id="Alert-Invalid-Name">
+
+              <div *ngIf="team.errors.required">
+                {{nameReqErr}}
+              </div>
+              <div *ngIf="team.errors.minlength">
+                {{nameMinErr}}
+              </div>
+
+            </div>
+          </td>
+          <td>
+            <label for="tech">Country</label>
+            <input id='country' name="country" #country="ngModel" placeholder="Enter the country name"
+              class="form-control" [(ngModel)]="currentTeam.country" required minlength="3" maxlength="15">
+            <div *ngIf="country.invalid && (country.dirty || country.touched)" class="alert alert-danger" id="Alert-Invalid-Country">
+
+              <div *ngIf="country.errors.required">
+                {{countryReqErr}}
+              </div>
+              <div *ngIf="country.errors.minlength">
+                {{countryMinErr}}
+              </div>
+
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <label for="status">Coach Name</label>
+            <input id='coach' name="coach" #coach="ngModel" placeholder="Enter the coach name" class="form-control"
+              [(ngModel)]="currentTeam.coach" required minlength="3" pattern="[A-Za-z ]+" maxlength="15">
+            <div *ngIf="coach.invalid && (coach.dirty || coach.touched)" class="alert alert-danger" id="Alert-Invalid-Coach">
+
+              <div *ngIf="coach.errors.required">
+                {{coachReqErr}}
+              </div>
+              <div *ngIf="coach.errors.minlength">
+                {{coachMinErr}}
+              </div>
+              <div *ngIf="coach.errors.pattern">
+                {{coachPatternErr}}
+              </div>
+
+            </div>
+          </td>
+
+        </tr>
+        <tr>
+          <td>
+            <label for="pwd">Password</label>
+            <input type='password' id='pwd' name="pwd" #pwd="ngModel" placeholder="Enter the team name"
+              class="form-control" [(ngModel)]="currentTeam.password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{8,12}" required>
+
+            <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="alert alert-danger" id="Alert-Invalid-Pwd">
+
+              <div *ngIf="pwd.errors.required">
+                {{pwdReqErr}}
+              </div>
+              <div *ngIf="pwd.errors.pattern">
+                {{pwdPatternErr}}
+              </div>
+
+            </div>
+          </td>
+          <td>
+            <label for="cpass">Confirm Password</label>
+            <input type='password' id='cpass' name="cpass" #cpass="ngModel" placeholder="Enter the country name"
+              class="form-control" [(ngModel)]="cpass1.cpass" required>
+            <div *ngIf="cpass.invalid && (cpass.dirty || cpass.touched)" class="alert alert-danger">
+
+              <div *ngIf="cpass.errors.required">
+                Confirm password is required
+              </div>
+
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <div *ngIf="currentTeam.password!=cpass1.cpass && cpass1.cpass!=''" class="alert alert-danger" id="Alert-Invalid-CPwd">
+              password and confirm password did not match
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button id='createBtn' [disabled]="userForm.invalid || currentTeam.password!=cpass1.cpass"
+              class="btn btn-success btn-block btn-lg" (click)="createTeam(userForm,currentTeam)"><i
+                class="fa fa-save"></i> Save</button>
+          </td>
+          <td><button id='clrBtn' type="reset" class="btn btn-primary btn-block btn-lg" (click)="clear()"><i
+                class="fa fa-retweet"></i> Clear</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+
+  </div>
+
+  <div class="col-lg-5"></div>
+
+</div>

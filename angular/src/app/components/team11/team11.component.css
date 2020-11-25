@@ -1,0 +1,31 @@
+a
+{
+  text-align: center;
+}
+
+a.home{
+  color:blue;
+  text-decoration: underline;
+}
+
+a.home:hover{
+  color:blue;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a.disabled {
+  cursor: not-allowed;
+}
+
+.hover:hover{
+  cursor: pointer;
+}
+
+.ralign{
+  float: right;
+}
+
+.lalign{
+  float: left;
+}

@@ -1,0 +1,57 @@
+<app-navigation></app-navigation>
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a id="viewdet" class="home" (click)='toHome()'>Home</a></li>
+    <li class="breadcrumb-item active">Team 11 for <span id="teamName">{{showTeamName}}</span></li>
+  </ol>
+</nav>
+<app-loader *ngIf="showLoading"></app-loader>
+
+<div class="row" *ngIf="playerArray?.length!=0;else elseBlock">
+  <div class="col-lg-1"></div>
+  <div class="col-lg-3">
+    <div class="card bg-primary">
+      <div class="card-body text-center">
+        <h4 class="card-title">List of all players</h4>
+        <hr>
+        <div class="list-group" *ngFor="let p of playerArray">
+          <a id="TeamEleven" (click)="toTeam11(p)"
+            class="list-group-item list-group-item-action list-group-item-info hover">
+            {{p.name}} - {{p.type}}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-3">
+    <span id='typeError' class="text-danger">
+      <h3>{{typeBaseSelection}}</h3>
+    </span>
+    <span id='noSuff' class="text-danger">
+      <h3>{{teamElevenMsg}}</h3>
+    </span>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card bg-warning">
+      <div class="card-body text-center">
+        <h4 class="card-title">Team 11 Players</h4>
+        <hr>
+        <div class="list-group" *ngFor="let p of team11Players;let i = index">
+          <div class="list-group-item list-group-item-action list-group-item-info hover">
+            <span class="lalign">{{i+1}} . {{p.name}}-{{p.type}}</span><span id="clearTeam11"
+              class="btn ralign" (click)="clearFromTeam11(p)"><i class="fa fa-window-close"
+                aria-hidden="true"></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-1"></div>
+</div>
+
+<ng-template #elseBlock>
+  <div *ngIf="!showLoading" class="alert alert-danger" role="alert">There are no players in the team</div>
+</ng-template>
